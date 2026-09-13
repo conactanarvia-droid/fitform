@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fitform — clothes sized to you, not a chart</title>
+<meta name="description" content="Fitform matches real, in-stock men's clothing to your actual height, weight, and body measurements — no more guessing between brands' size charts.">
+<meta property="og:title" content="Fitform">
+<meta property="og:description" content="Clothes sized to you, not a chart.">
+<meta property="og:type" content="website">
+
+<!-- Impact.com site verification tag goes here once issued -->
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#e7e4dc;
+    --surface:#fbfaf6;
+    --surface-2:#f1eee4;
+    --ink:#1d2733;
+    --ink-dim:#5b6570;
+    --indigo:#2c4a73;
+    --indigo-strong:#1f3555;
+    --selvage:#b7402a;
+    --brass:#8a6a37;
+    --line:#c9c3b4;
+    --line-strong:#a9a290;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14181d; --surface:#1b2029; --surface-2:#20262f;
+      --ink:#e7e4dc; --ink-dim:#9aa1aa;
+      --indigo:#8fb0dd; --indigo-strong:#bcd2f0;
+      --selvage:#e2664a; --brass:#d2a65d;
+      --line:#333b46; --line-strong:#454f5c;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Source Serif 4",Georgia,serif;
+    font-size:18px; line-height:1.6;
+  }
+  a{color:var(--indigo);}
+  .wrap{max-width:960px; margin-inline:auto; padding-inline:24px;}
+
+  h1,h2,.eyebrow,.mono,nav{font-family:"Big Shoulders Display","Arial Narrow",sans-serif;}
+  .mono{font-family:"JetBrains Mono",monospace;}
+
+  header.top{
+    padding-block:22px;
+    border-bottom:1px solid var(--line);
+  }
+  header.top .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .wordmark{font-size:1.35rem; font-weight:800; letter-spacing:.01em;}
+  .tape{
+    height:1px;
+    background-image:repeating-linear-gradient(90deg, var(--brass) 0 2px, transparent 2px 14px);
+    margin-block:4px;
+  }
+
+  .hero{padding-block:72px 56px;}
+  .eyebrow{
+    font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--brass);
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:clamp(2.4rem,6vw,4.1rem);
+    font-weight:800;
+    line-height:1.02;
+    margin:0 0 22px;
+    text-wrap:balance;
+    max-width:14ch;
+  }
+  .lede{
+    font-size:1.25rem;
+    color:var(--ink-dim);
+    max-width:44ch;
+    margin:0 0 34px;
+  }
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--indigo);
+    color:var(--surface);
+    font-family:"JetBrains Mono",monospace;
+    font-size:14px;
+    letter-spacing:.04em;
+    text-decoration:none;
+    padding:14px 22px;
+    border:1px solid var(--indigo);
+  }
+  .cta:hover{background:var(--indigo-strong); border-color:var(--indigo-strong);}
+  .cta-note{
+    display:block;
+    margin-top:12px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+  }
+
+  .measure-row{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    margin-top:48px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;
+    color:var(--ink-dim);
+  }
+  .measure-row b{color:var(--brass); font-variant-numeric:tabular-nums;}
+
+  section.how{
+    background:var(--surface);
+    border-top:1px solid var(--line-strong);
+    border-bottom:1px solid var(--line-strong);
+    padding-block:64px;
+  }
+  .how h2{
+    font-size:1.9rem; font-weight:800; margin:0 0 40px; text-wrap:balance;
+  }
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:0;
+    border:1px solid var(--line-strong);
+  }
+  .step{
+    padding:26px 24px;
+    border-left:3px solid var(--indigo);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .step:first-child{border-left:none;}
+  .step .n{font-family:"JetBrains Mono",monospace; color:var(--brass); font-size:.85rem;}
+  .step h3{margin:0; font-size:1.2rem; font-family:"Source Serif 4",serif; font-weight:700;}
+  .step p{margin:0; color:var(--ink-dim); font-size:.98rem;}
+  @media (max-width:720px){
+    .steps{grid-template-columns:1fr;}
+    .step{border-left:none; border-top:3px solid var(--indigo);}
+    .step:first-child{border-top:none;}
+  }
+
+  section.retailers{padding-block:56px;}
+  section.retailers h2{
+    font-size:1.05rem; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink-dim); font-weight:700; margin:0 0 20px;
+  }
+  .chips{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{
+    font-family:"JetBrains Mono",monospace; font-size:13px;
+    border:1px solid var(--line-strong); padding:9px 14px; background:var(--surface);
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding-block:32px 48px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  footer a{color:var(--ink-dim);}
+</style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap">
+      <div class="wordmark">FITFORM</div>
+      <div class="mono" style="font-size:12px; color:var(--ink-dim);">iOS · IN DEVELOPMENT</div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Coming to iOS</div>
+      <h1>Clothes sized to you. Not a chart.</h1>
+      <p class="lede">Fitform matches real, in-stock men's clothing — jeans, shirts, jackets — to your actual height, weight, and measurements. No more guessing between one brand's Medium and another's Large.</p>
+      <a class="cta" href="mailto:conactanarvia@gmail.com?subject=Notify%20me%20when%20Fitform%20launches">Get notified at launch →</a>
+      <span class="cta-note">No spam — one email, when the app is ready.</span>
+
+      <div class="measure-row">
+        <span><b>32×32</b> denim</span>
+        <span><b>15.5×34</b> dress shirt</span>
+        <span><b>M</b> — but which M?</span>
+      </div>
+    </div>
+  </div>
+  <div class="tape"></div>
+
+  <section class="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="n">01</div>
+          <h3>Measure</h3>
+          <p>Chest, waist, inseam — or just height and weight if that's all you've got handy.</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h3>Match</h3>
+          <p>Your numbers get checked against real inventory, brand by brand, size chart by size chart — not a generic S/M/L guess.</p>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h3>Shop</h3>
+          <p>Buy straight from the retailer. Fitform's job is getting you the right size on the first try.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="retailers">
+    <div class="wrap">
+      <h2>Built to match inventory from</h2>
+      <div class="chips">
+        <span class="chip">Levi's</span>
+        <span class="chip">Old Navy</span>
+        <span class="chip">Abercrombie &amp; Fitch</span>
+        <span class="chip">Calvin Klein</span>
+        <span class="chip">+ more at launch</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; flex-direction:column; gap:10px;">
+      <div>Questions or press? <a href="mailto:conactanarvia@gmail.com">conactanarvia@gmail.com</a></div>
+      <div>Fitform is an independent app in development and is not affiliated with, sponsored by, or endorsed by the retailers named above.</div>
+      <div>© 2026 Fitform</div>
+    </div>
+  </footer>
+
+</body>
+</html>
