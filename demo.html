@@ -108,6 +108,8 @@
   .cardrow{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
   .item{border:1px solid var(--line-strong); background:var(--surface); padding:16px; display:flex; gap:14px;}
   .item svg{flex:0 0 56px; width:56px; height:56px;}
+  .item img{flex:0 0 64px; width:64px; height:64px; object-fit:cover; border:1px solid var(--line-strong); background:var(--surface-2);}
+  .item .noimg{flex:0 0 64px; width:64px; height:64px; border:1px solid var(--line-strong); background:var(--surface-2); display:flex; align-items:center; justify-content:center; font-family:"JetBrains Mono",monospace; font-size:9px; color:var(--ink-dim); text-align:center;}
   .item .body{display:flex; flex-direction:column; gap:4px; min-width:0;}
   .item .brand{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--brass);}
   .item .name{font-family:"Source Serif 4",serif; font-weight:700; font-size:1rem;}
@@ -279,7 +281,10 @@
         var tag = item.sizeConfirmed
           ? '<span class="fit-tag confirmed">CONFIRMED FIT</span>'
           : '<span class="fit-tag">size unconfirmed</span>';
-        html += '<div class="item">' +
+        var thumb = item.image
+          ? '<img src="' + item.image + '" alt="" loading="lazy">'
+          : '<div class="noimg">no image</div>';
+        html += '<div class="item">' + thumb +
           '<div class="body">' +
           '<span class="brand">' + escapeHtml(item.brand) + tag + '</span>' +
           '<span class="name">' + escapeHtml(item.title) + '</span>' +
