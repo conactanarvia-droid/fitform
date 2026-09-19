@@ -97,8 +97,12 @@
   .results h2{font-size:1.5rem; font-weight:800; margin:0 0 4px;}
   .sample-badge{
     display:inline-block; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.08em;
-    color:var(--selvage); border:1px solid var(--selvage); padding:3px 8px; margin-bottom:22px;
+    color:var(--brass); border:1px solid var(--brass); padding:3px 8px; margin-bottom:22px;
   }
+  .loading{color:var(--ink-dim); font-family:"JetBrains Mono",monospace; font-size:13px;}
+  .fit-tag{font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.05em; padding:2px 6px; border:1px solid var(--line-strong); margin-left:8px;}
+  .fit-tag.confirmed{color:var(--brass); border-color:var(--brass);}
+  .item a.viewlink{font-size:.8rem; margin-top:4px;}
   .catgroup{margin-bottom:30px;}
   .catgroup h3{font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 12px; border-bottom:1px solid var(--line); padding-bottom:8px;}
   .cardrow{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
@@ -130,7 +134,7 @@
 
   <div class="flag">
     <span class="k">Selvage — read before you click through</span>
-    <p>This demo runs on a small set of hand-entered sample items, not a live retailer feed. It exists to show how the matching logic behaves end to end, ahead of affiliate approval.</p>
+    <p>This now calls eBay's live production Browse API — these are real, currently-listed items, not samples. eBay is a marketplace, so condition (new with tags vs. pre-owned) and exact color varies listing to listing; the size crosswalk is confirmed where a listing's title states it plainly, and shown-but-unconfirmed otherwise.</p>
   </div>
 
   <nav class="progress" id="progress">
@@ -237,7 +241,7 @@
 
   <section class="results" id="results" hidden>
     <h2>Your matches</h2>
-    <span class="sample-badge">SAMPLE INVENTORY — NOT LIVE</span>
+    <span class="sample-badge" id="sourceBadge">LIVE — eBay production inventory</span>
     <div id="resultsBody"></div>
     <button type="button" class="nav ghost" id="restart">↺ Start over</button>
   </section>
@@ -249,75 +253,65 @@
   var state = {shape:'trapezoid', undertone:'neutral', depth:'medium', style:'smart-casual'};
   var currentStep = 1;
 
-  var CATALOG = [
-    {cat:'Tops', brand:"Levi's", name:'Long-Sleeve Utility Shirt', base:59.50, kind:'top'},
-    {cat:'Tops', brand:'Old Navy', name:'Everyday Crewneck Tee (2-pack)', base:22.00, kind:'top'},
-    {cat:'Bottoms', brand:"Levi's", name:'511 Slim Jean', base:69.50, kind:'bottom'},
-    {cat:'Bottoms', brand:'Old Navy', name:'Slim Taper Chino', base:44.00, kind:'bottom'},
-    {cat:'Outerwear', brand:'Abercrombie & Fitch', name:'Wool-Blend Overshirt', base:128.00, kind:'top'},
-    {cat:'Outerwear', brand:'Calvin Klein', name:'Structured Bomber Jacket', base:158.00, kind:'top'}
-  ];
+  var API_URL = 'https://fitform-api-nu.vercel.app/api/recommend';
 
-  var UNDERTONE_COLORS = {
-    warm:  {light:[['Olive','#6b6b3a'],['Camel','#c19a6b']],            deep:[['Burnt Orange','#cc5500'],['Chocolate Brown','#4a2c1d']]},
-    cool:  {light:[['Navy','#1f3555'],['Slate Blue','#5b7a9c']],        deep:[['Emerald','#046307'],['Deep Plum','#4b2142']]},
-    neutral:{light:[['Charcoal','#3c3f44'],['Cream','#e7dfc9']],        deep:[['Charcoal','#3c3f44'],['Burgundy','#6d071a']]}
-  };
-  var SHAPE_CUT = {
-    rectangle:'a layered, textured cut to add shape',
-    triangle:'a structured shoulder to balance broader hips',
-    inverted:'a relaxed, straight cut through the shoulder',
-    oval:'a vertical, structured line',
-    trapezoid:'a clean slim-to-straight cut'
-  };
-
-  function colorsFor(undertone, depth){
-    var d = (depth === 'deep') ? 'deep' : 'light';
-    return UNDERTONE_COLORS[undertone][d];
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
   }
 
-  function sizeLabel(kind){
-    var chest = Number(document.getElementById('chest').value) || 40;
-    var waist = Number(document.getElementById('waist').value) || 34;
-    var inseam = Number(document.getElementById('inseam').value) || 32;
-    if (kind === 'bottom') return waist + '×' + inseam;
-    if (chest < 38) return 'S';
-    if (chest < 43) return 'M';
-    if (chest < 47) return 'L';
-    return 'XL';
+  function renderError(message){
+    document.getElementById('resultsBody').innerHTML =
+      '<p class="loading">Couldn\'t reach the live catalog right now (' + escapeHtml(message) + '). Try again in a moment.</p>';
   }
 
-  function silhouetteSVG(hex){
-    return '<svg viewBox="0 0 56 56" aria-hidden="true">' +
-      '<path d="M18 6 L28 2 L38 6 L46 14 L40 20 L36 16 L36 52 L20 52 L20 16 L16 20 L10 14 Z" fill="' + hex + '"/>' +
-    '</svg>';
-  }
-
-  function renderResults(){
+  function renderResults(data){
     var body = document.getElementById('resultsBody');
-    var groups = {};
-    CATALOG.forEach(function(item){ (groups[item.cat] = groups[item.cat] || []).push(item); });
-
-    var colors = colorsFor(state.undertone, state.depth);
-    var cutPhrase = SHAPE_CUT[state.shape];
+    var cats = data.categories || {};
     var html = '';
-    Object.keys(groups).forEach(function(cat){
+    Object.keys(cats).forEach(function(cat){
+      var items = cats[cat];
+      if (!items.length) return;
       html += '<div class="catgroup"><h3>' + cat + '</h3><div class="cardrow">';
-      groups[cat].forEach(function(item, i){
-        var color = colors[i % colors.length];
-        var size = sizeLabel(item.kind);
-        html += '<div class="item">' + silhouetteSVG(color[1]) +
+      items.forEach(function(item){
+        var sizeText = item.size ? JSON.stringify(item.size).replace(/[{}"]/g, '').replace(/,/g, ', ') : 'not stated in listing';
+        var tag = item.sizeConfirmed
+          ? '<span class="fit-tag confirmed">CONFIRMED FIT</span>'
+          : '<span class="fit-tag">size unconfirmed</span>';
+        html += '<div class="item">' +
           '<div class="body">' +
-          '<span class="brand">' + item.brand + '</span>' +
-          '<span class="name">' + item.name + ' — ' + color[0] + '</span>' +
-          '<span class="price mono">$' + item.base.toFixed(2) + ' · size ' + size + '</span>' +
-          '<span class="why">Fits your ' + (item.kind === 'bottom' ? 'waist and inseam' : 'chest measurement') +
-            ', ' + color[0].toLowerCase() + ' suits your ' + state.undertone + ' undertone, cut for ' + cutPhrase + '.</span>' +
+          '<span class="brand">' + escapeHtml(item.brand) + tag + '</span>' +
+          '<span class="name">' + escapeHtml(item.title) + '</span>' +
+          '<span class="price mono">' + (item.price ? '$' + item.price : 'price n/a') + ' · size: ' + escapeHtml(sizeText) + '</span>' +
+          '<span class="why">' + escapeHtml(item.why) + '</span>' +
+          '<a class="viewlink" href="' + item.url + '" target="_blank" rel="noopener">View live listing on eBay →</a>' +
           '</div></div>';
       });
       html += '</div></div>';
     });
-    body.innerHTML = html;
+    body.innerHTML = html || '<p class="loading">No live matches right now for these inputs — eBay\'s inventory changes constantly, try again shortly.</p>';
+  }
+
+  async function fetchResults(){
+    document.getElementById('resultsBody').innerHTML = '<p class="loading">Calling eBay’s live catalog… (a few seconds)</p>';
+    var params = new URLSearchParams({
+      waist: document.getElementById('waist').value,
+      inseam: document.getElementById('inseam').value,
+      chest: document.getElementById('chest').value,
+      undertone: state.undertone,
+      depth: state.depth,
+      shape: state.shape,
+      style: state.style
+    });
+    try {
+      var res = await fetch(API_URL + '?' + params.toString());
+      var data = await res.json();
+      if (!res.ok) { renderError(data.error || res.status); return; }
+      renderResults(data);
+    } catch (e) {
+      renderError(e.message);
+    }
   }
 
   function showStep(n){
@@ -351,11 +345,11 @@
   });
 
   document.getElementById('submit').addEventListener('click', function(){
-    renderResults();
     document.getElementById('wizard').hidden = true;
     document.getElementById('progress').hidden = true;
     document.getElementById('results').hidden = false;
     document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+    fetchResults();
   });
 
   document.getElementById('restart').addEventListener('click', function(){
