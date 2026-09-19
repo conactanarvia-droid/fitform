@@ -131,7 +131,7 @@
 
   <div class="hero">
     <h1>See Fitform in action</h1>
-    <p>Four quick inputs, then a set of matches — the same size, cut, and color logic described in the product design doc, running here against sample inventory.</p>
+    <p>Five quick inputs, then a set of matches — the same size, cut, and color logic described in the product design doc, running here against live eBay inventory.</p>
   </div>
 
   <div class="flag">
@@ -144,6 +144,7 @@
     <div class="pstep" data-step="2">2 · Shape</div>
     <div class="pstep" data-step="3">3 · Tone</div>
     <div class="pstep" data-step="4">4 · Style</div>
+    <div class="pstep" data-step="5">5 · Garments</div>
   </nav>
 
   <form id="wizard">
@@ -235,6 +236,22 @@
       </div>
       <div class="btnrow">
         <button type="button" class="nav ghost" data-prev>← Back</button>
+        <button type="button" class="nav" data-next>Next →</button>
+      </div>
+    </section>
+
+    <section class="card-panel" data-panel="5" hidden>
+      <h2>What are you shopping for?</h2>
+      <p class="hint">Pick one or more — each pulls its own live search from eBay.</p>
+      <div class="choice-grid" data-group="categories" data-multi="true">
+        <button type="button" class="choice" data-value="jeans" aria-pressed="true"><span class="t">Jeans</span><span class="d">denim, waist × inseam</span></button>
+        <button type="button" class="choice" data-value="chinos" aria-pressed="false"><span class="t">Chinos &amp; Pants</span><span class="d">waist × inseam</span></button>
+        <button type="button" class="choice" data-value="dress-shirt" aria-pressed="true"><span class="t">Dress Shirts</span><span class="d">neck × sleeve</span></button>
+        <button type="button" class="choice" data-value="casual-shirt" aria-pressed="false"><span class="t">Casual &amp; T-Shirts</span><span class="d">S–XXL</span></button>
+        <button type="button" class="choice" data-value="jacket" aria-pressed="false"><span class="t">Jackets &amp; Outerwear</span><span class="d">S–XXL</span></button>
+      </div>
+      <div class="btnrow">
+        <button type="button" class="nav ghost" data-prev>← Back</button>
         <button type="button" class="nav" id="submit">See my matches →</button>
       </div>
     </section>
@@ -252,7 +269,7 @@
 
 <script>
 (function(){
-  var state = {shape:'trapezoid', undertone:'neutral', depth:'medium', style:'smart-casual'};
+  var state = {shape:'trapezoid', undertone:'neutral', depth:'medium', style:'smart-casual', categories:['jeans','dress-shirt']};
   var currentStep = 1;
 
   var API_URL = 'https://fitform-api-nu.vercel.app/api/recommend';
@@ -307,7 +324,8 @@
       undertone: state.undertone,
       depth: state.depth,
       shape: state.shape,
-      style: state.style
+      style: state.style,
+      categories: state.categories.join(',')
     });
     try {
       var res = await fetch(API_URL + '?' + params.toString());
@@ -332,7 +350,7 @@
   }
 
   document.querySelectorAll('[data-next]').forEach(function(b){
-    b.addEventListener('click', function(){ if (currentStep < 4) showStep(currentStep + 1); });
+    b.addEventListener('click', function(){ if (currentStep < 5) showStep(currentStep + 1); });
   });
   document.querySelectorAll('[data-prev]').forEach(function(b){
     b.addEventListener('click', function(){ if (currentStep > 1) showStep(currentStep - 1); });
@@ -340,11 +358,20 @@
 
   document.querySelectorAll('[data-group]').forEach(function(group){
     var key = group.getAttribute('data-group');
+    var multi = group.getAttribute('data-multi') === 'true';
     group.querySelectorAll('.choice').forEach(function(btn){
       btn.addEventListener('click', function(){
-        group.querySelectorAll('.choice').forEach(function(o){ o.setAttribute('aria-pressed','false'); });
-        btn.setAttribute('aria-pressed','true');
-        state[key] = btn.getAttribute('data-value');
+        if (multi) {
+          var nowOn = btn.getAttribute('aria-pressed') !== 'true';
+          // require at least one category selected at all times
+          if (!nowOn && state[key].length <= 1) return;
+          btn.setAttribute('aria-pressed', String(nowOn));
+          state[key] = Array.from(group.querySelectorAll('.choice[aria-pressed="true"]')).map(function(o){ return o.getAttribute('data-value'); });
+        } else {
+          group.querySelectorAll('.choice').forEach(function(o){ o.setAttribute('aria-pressed','false'); });
+          btn.setAttribute('aria-pressed','true');
+          state[key] = btn.getAttribute('data-value');
+        }
       });
     });
   });
