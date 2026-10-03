@@ -98,24 +98,38 @@
   }
   .cta:hover{background:var(--indigo-strong); border-color:var(--indigo-strong);}
 
+  .swatches{display:flex; margin-bottom:22px;}
+  .swatches .sw{
+    width:30px; height:30px; border:2px solid var(--bg);
+    margin-right:-9px; box-shadow:0 2px 4px rgba(0,0,0,.15);
+  }
+  .swatches .sw:nth-child(1){background:var(--indigo); transform:rotate(-9deg); z-index:3;}
+  .swatches .sw:nth-child(2){background:var(--brass); transform:rotate(5deg); z-index:2;}
+  .swatches .sw:nth-child(3){background:var(--selvage); transform:rotate(-4deg); z-index:1;}
+
   .measure-row{
     display:flex;
-    gap:28px;
+    gap:10px;
     flex-wrap:wrap;
-    margin-top:48px;
-    padding-top:28px;
-    border-top:1px solid var(--line);
+    margin-top:40px;
+  }
+  .pill{
     font-family:"JetBrains Mono",monospace;
     font-size:13px;
-    color:var(--ink-dim);
+    font-variant-numeric:tabular-nums;
+    color:var(--surface);
+    padding:9px 14px;
+    display:inline-flex;
+    gap:7px;
+    align-items:baseline;
   }
-  .measure-row b{font-variant-numeric:tabular-nums;}
-  .c-indigo{color:var(--indigo-strong);}
-  .c-brass{color:var(--brass);}
-  .c-selvage{color:var(--selvage);}
+  .pill i{font-style:normal; opacity:.82; font-size:11.5px;}
+  .pill-indigo{background:var(--indigo);}
+  .pill-brass{background:var(--brass);}
+  .pill-selvage{background:var(--selvage);}
 
   section.how{
-    background:var(--surface);
+    background:color-mix(in srgb, var(--brass) 7%, var(--surface));
     border-top:1px solid var(--line-strong);
     border-bottom:1px solid var(--line-strong);
     padding-block:64px;
@@ -135,9 +149,9 @@
     display:flex; flex-direction:column; gap:10px;
   }
   .step:first-child{border-left:none;}
-  .step.indigo{border-left-color:var(--indigo);}
-  .step.brass{border-left-color:var(--brass);}
-  .step.selvage{border-left-color:var(--selvage);}
+  .step.indigo{border-left-color:var(--indigo); background:color-mix(in srgb, var(--indigo) 5%, var(--surface));}
+  .step.brass{border-left-color:var(--brass); background:color-mix(in srgb, var(--brass) 6%, var(--surface));}
+  .step.selvage{border-left-color:var(--selvage); background:color-mix(in srgb, var(--selvage) 5%, var(--surface));}
   .step .n{font-family:"JetBrains Mono",monospace; font-size:.85rem;}
   .step.indigo .n{color:var(--indigo-strong);}
   .step.brass .n{color:var(--brass);}
@@ -223,7 +237,7 @@
   .item .price{font-family:"JetBrains Mono",monospace; font-size:.85rem; color:var(--ink-dim);}
   .item .why{font-size:.82rem; color:var(--ink-dim); font-style:italic; margin-top:4px;}
 
-  section.retailers{padding-block:56px;}
+  section.retailers{padding-block:56px; background:color-mix(in srgb, var(--indigo) 6%, var(--bg));}
   section.retailers h2{
     font-size:1.05rem; text-transform:uppercase; letter-spacing:.08em;
     color:var(--ink-dim); font-weight:700; margin:0 0 20px;
@@ -272,15 +286,18 @@
 
   <div class="hero">
     <div class="wrap">
+      <div class="swatches" aria-hidden="true">
+        <span class="sw"></span><span class="sw"></span><span class="sw"></span>
+      </div>
       <div class="eyebrow">Coming to iOS</div>
       <h1>Clothes sized to you. Not a chart.</h1>
       <p class="lede">Fitform matches real, in-stock men's clothing — jeans, shirts, jackets — to your measurements, your build, and your coloring. No more guessing between one brand's Medium and another's Large, or a color that just doesn't work for you.</p>
       <a class="cta" href="#try">Try it now ↓</a>
 
       <div class="measure-row">
-        <span><b class="c-indigo">32×32</b> denim</span>
-        <span><b class="c-brass">15.5×34</b> dress shirt</span>
-        <span><b class="c-selvage">M</b> — but which M?</span>
+        <span class="pill pill-indigo">32×32 <i>denim</i></span>
+        <span class="pill pill-brass">15.5×34 <i>dress shirt</i></span>
+        <span class="pill pill-selvage">M <i>— but which M?</i></span>
       </div>
     </div>
   </div>
