@@ -97,14 +97,6 @@
     border:1px solid var(--indigo);
   }
   .cta:hover{background:var(--indigo-strong); border-color:var(--indigo-strong);}
-  .cta.ghost{background:transparent; color:var(--indigo);}
-  .cta-note{
-    display:block;
-    margin-top:12px;
-    font-family:"JetBrains Mono",monospace;
-    font-size:12px;
-    color:var(--ink-dim);
-  }
 
   .measure-row{
     display:flex;
@@ -117,7 +109,10 @@
     font-size:13px;
     color:var(--ink-dim);
   }
-  .measure-row b{color:var(--brass); font-variant-numeric:tabular-nums;}
+  .measure-row b{font-variant-numeric:tabular-nums;}
+  .c-indigo{color:var(--indigo-strong);}
+  .c-brass{color:var(--brass);}
+  .c-selvage{color:var(--selvage);}
 
   section.how{
     background:var(--surface);
@@ -140,12 +135,21 @@
     display:flex; flex-direction:column; gap:10px;
   }
   .step:first-child{border-left:none;}
-  .step .n{font-family:"JetBrains Mono",monospace; color:var(--brass); font-size:.85rem;}
+  .step.indigo{border-left-color:var(--indigo);}
+  .step.brass{border-left-color:var(--brass);}
+  .step.selvage{border-left-color:var(--selvage);}
+  .step .n{font-family:"JetBrains Mono",monospace; font-size:.85rem;}
+  .step.indigo .n{color:var(--indigo-strong);}
+  .step.brass .n{color:var(--brass);}
+  .step.selvage .n{color:var(--selvage);}
   .step h3{margin:0; font-size:1.2rem; font-family:"Source Serif 4",serif; font-weight:700;}
   .step p{margin:0; color:var(--ink-dim); font-size:.98rem;}
   @media (max-width:720px){
     .steps{grid-template-columns:1fr;}
-    .step{border-left:none; border-top:3px solid var(--indigo);}
+    .step{border-left:none; border-top:3px solid var(--line-strong);}
+    .step.indigo{border-top-color:var(--indigo);}
+    .step.brass{border-top-color:var(--brass);}
+    .step.selvage{border-top-color:var(--selvage);}
     .step:first-child{border-top:none;}
   }
 
@@ -229,6 +233,20 @@
     font-family:"JetBrains Mono",monospace; font-size:13px;
     border:1px solid var(--line-strong); padding:9px 14px; background:var(--surface);
   }
+  .chip.highlight{
+    background:var(--brass); border-color:var(--brass); color:var(--surface); font-weight:700;
+  }
+
+  section.notify{
+    background:var(--selvage); color:var(--surface);
+    padding-block:48px; text-align:center;
+  }
+  section.notify h2{font-size:1.5rem; font-weight:800; margin:0 0 10px; text-wrap:balance;}
+  section.notify p{color:var(--surface); opacity:.9; margin:0 0 22px; max-width:46ch; margin-inline:auto;}
+  .cta.on-selvage{
+    background:var(--surface); color:var(--selvage); border-color:var(--surface);
+  }
+  .cta.on-selvage:hover{background:var(--bg); border-color:var(--bg);}
 
   footer{
     border-top:1px solid var(--line);
@@ -257,14 +275,12 @@
       <div class="eyebrow">Coming to iOS</div>
       <h1>Clothes sized to you. Not a chart.</h1>
       <p class="lede">Fitform matches real, in-stock men's clothing — jeans, shirts, jackets — to your measurements, your build, and your coloring. No more guessing between one brand's Medium and another's Large, or a color that just doesn't work for you.</p>
-      <a class="cta" href="mailto:conactanarvia@gmail.com?subject=Notify%20me%20when%20Fitform%20launches">Get notified at launch →</a>
-      <a class="cta ghost" href="#try">Try it now ↓</a>
-      <span class="cta-note">No spam — one email, when the app is ready.</span>
+      <a class="cta" href="#try">Try it now ↓</a>
 
       <div class="measure-row">
-        <span><b>32×32</b> denim</span>
-        <span><b>15.5×34</b> dress shirt</span>
-        <span><b>M</b> — but which M?</span>
+        <span><b class="c-indigo">32×32</b> denim</span>
+        <span><b class="c-brass">15.5×34</b> dress shirt</span>
+        <span><b class="c-selvage">M</b> — but which M?</span>
       </div>
     </div>
   </div>
@@ -274,17 +290,17 @@
     <div class="wrap">
       <h2>How it works</h2>
       <div class="steps">
-        <div class="step">
+        <div class="step indigo">
           <div class="n">01</div>
           <h3>Tell us about you</h3>
           <p>Chest, waist, inseam, body shape, and skin tone — the same things a stylist would ask before recommending anything.</p>
         </div>
-        <div class="step">
+        <div class="step brass">
           <div class="n">02</div>
           <h3>Match</h3>
           <p>Checked against real inventory, live — the right size, a cut that suits your build, and colors that suit your coloring.</p>
         </div>
-        <div class="step">
+        <div class="step selvage">
           <div class="n">03</div>
           <h3>Shop</h3>
           <p>Buy straight from the retailer. Fitform's job is getting you the right size on the first try.</p>
@@ -435,9 +451,17 @@
     <div class="wrap">
       <h2>Sourced live from</h2>
       <div class="chips">
-        <span class="chip">eBay</span>
+        <span class="chip highlight">eBay</span>
         <span class="chip">+ more retailers at launch</span>
       </div>
+    </div>
+  </section>
+
+  <section class="notify">
+    <div class="wrap">
+      <h2>Not ready to try it yet?</h2>
+      <p>Get a single email the day Fitform launches on iOS — no spam, no spam ever.</p>
+      <a class="cta on-selvage" href="mailto:conactanarvia@gmail.com?subject=Notify%20me%20when%20Fitform%20launches">Get notified at launch →</a>
     </div>
   </section>
 
