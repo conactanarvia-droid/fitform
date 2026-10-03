@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fitform — Privacy Policy</title>
+<meta name="description" content="What Fitform collects, what it's used for, and what it never does.">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#e7e4dc; --surface:#fbfaf6; --surface-2:#f1eee4;
+    --ink:#1d2733; --ink-dim:#5b6570;
+    --indigo:#2c4a73; --indigo-strong:#1f3555;
+    --selvage:#b7402a; --brass:#8a6a37;
+    --line:#c9c3b4; --line-strong:#a9a290;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14181d; --surface:#1b2029; --surface-2:#20262f;
+      --ink:#e7e4dc; --ink-dim:#9aa1aa;
+      --indigo:#8fb0dd; --indigo-strong:#bcd2f0;
+      --selvage:#e2664a; --brass:#d2a65d;
+      --line:#333b46; --line-strong:#454f5c;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Source Serif 4",Georgia,serif;
+    font-size:18px; line-height:1.65;
+  }
+  a{color:var(--indigo);}
+  .wrap{max-width:720px; margin-inline:auto; padding-inline:24px;}
+
+  h1,h2,.eyebrow,.mono,nav{font-family:"Big Shoulders Display","Arial Narrow",sans-serif;}
+  .mono{font-family:"JetBrains Mono",monospace;}
+
+  header.top{padding-block:22px; border-bottom:1px solid var(--line);}
+  header.top .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .wordmark{font-size:1.35rem; font-weight:800; letter-spacing:.01em; text-decoration:none; color:var(--ink);}
+
+  main{padding-block:56px 72px;}
+  .eyebrow{font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--brass); margin-bottom:10px;}
+  h1{font-size:clamp(2rem,5vw,2.8rem); font-weight:800; margin:0 0 8px; text-wrap:balance;}
+  .updated{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-dim); margin-bottom:40px;}
+
+  h2{font-size:1.25rem; font-weight:800; margin:40px 0 12px; border-bottom:1px solid var(--line); padding-bottom:8px;}
+  p,ul{margin:0 0 16px; color:var(--ink);}
+  ul{padding-left:1.2em;}
+  li{margin-bottom:8px;}
+
+  .note{border-left:4px solid var(--brass); background:var(--surface); padding:14px 18px; margin:0 0 24px;}
+  .note p{margin:0; font-size:.95rem; color:var(--ink-dim);}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--line-strong); margin-bottom:24px;}
+  table{border-collapse:collapse; width:100%; min-width:460px; font-size:.92rem;}
+  th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-dim); background:var(--surface-2);}
+  tbody tr:last-child td{border-bottom:none;}
+
+  footer{border-top:1px solid var(--line); padding-block:32px 48px; font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-dim);}
+  footer a{color:var(--ink-dim);}
+</style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="wordmark" href="./">FITFORM</a>
+      <div class="mono" style="font-size:12px; color:var(--ink-dim);">PRIVACY</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="eyebrow">Privacy Policy</div>
+      <h1>What Fitform does with your information</h1>
+      <div class="updated">Last updated October 3, 2026</div>
+
+      <p>Fitform is a clothing recommendation app. This page explains, plainly, what information it handles, why, and what it deliberately does not do.</p>
+
+      <h2>What's collected</h2>
+      <p>When you use Fitform's matching flow — in the app or on this website — the following is sent to Fitform's own backend so it can search for and rank clothing matches:</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Data</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Height, weight, chest, waist, inseam</td><td>Matched against listing sizes to filter and confirm fit.</td></tr>
+            <tr><td>Body shape, skin undertone, depth</td><td>Used to favor cuts and colors likely to suit you.</td></tr>
+            <tr><td>Style preference and garment categories</td><td>Used to rank and filter what's searched for.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>That information is sent as part of each request to <span class="mono">api.usefitform.com</span>, which uses it to query eBay's catalog and return matching results. It is not tied to an account, a name, or an email address — Fitform doesn't have user accounts.</p>
+
+      <div class="note">
+        <p><strong>Not stored.</strong> As of this version, Fitform's backend does not save your measurements or preferences anywhere after a request completes — each search is handled and discarded. If that changes in a future version (for example, to let you save a profile), this page will say so before it ships.</p>
+      </div>
+
+      <h2>What's never done</h2>
+      <ul>
+        <li>No advertising trackers, no third-party analytics SDKs.</li>
+        <li>No selling, renting, or sharing of your information with data brokers.</li>
+        <li>No linking your measurements to your identity, device, or any other app.</li>
+        <li>No account or login — there's nothing to create or lose.</li>
+      </ul>
+
+      <h2>Third parties involved</h2>
+      <p>Fitform's backend queries <strong>eBay's Browse API</strong> to find real, live listings. Your measurements and preferences are used server-side to filter and rank what eBay returns — eBay does not receive your personal measurements as part of that process, only generic search terms (e.g. "mens jeans"). When you tap through to view or buy an item, that happens on eBay's own site or app, governed by eBay's own privacy policy from that point on.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy or your data: <a href="mailto:conactanarvia@gmail.com">conactanarvia@gmail.com</a>.</p>
+
+      <h2>Changes</h2>
+      <p>If what's collected or how it's used changes in a meaningful way, this page will be updated and the "last updated" date above will change accordingly.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="./">← Back to Fitform</a>
+    </div>
+  </footer>
+
+</body>
+</html>
